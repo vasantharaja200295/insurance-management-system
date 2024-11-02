@@ -49,20 +49,10 @@ class AuthController {
       const { token } = req.params;
 
       const user = await User.findOne({
-        $or: [
-          {
-            verificationToken: token,
-            verificationExpires: { $gt: Date.now() },
-          },
-          { isVerified: true },
-        ],
+        verificationToken: token,
+        verificationExpires: { $gt: Date.now() },
       });
 
-      if (user.isVerified) {
-        return res.status(200).json({
-          message: "Email already verified",
-        });
-      }
 
       if (!user) {
         return res.status(400).json({

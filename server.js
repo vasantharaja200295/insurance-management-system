@@ -43,6 +43,7 @@ app.use('/api', apiLimiter);
 // Routes
 app.use('/api/auth', require('./src/routes/api/auth'));
 app.use('/api/agents', require('./src/routes/api/agents'));
+app.use('/api/appointments',  require('./src/routes/api/appointments'));
 
 // Error handling middleware
 app.use(handleError);

@@ -1,5 +1,8 @@
 const Agent = require('../models/Agent');
 const User = require('../models/User');
+const mongoose = require('mongoose');
+const { ObjectId } = mongoose.Types;
+
 
 class AgentController {
     static async getAllAgents(req, res, next) {
@@ -27,7 +30,14 @@ class AgentController {
         try {
             const { agentId } = req.params;
 
-            const agent = await Agent.findById(agentId)
+            if (!ObjectId.isValid(agentId)) {
+                return res.status(400).json({
+                    error: 'Bad Request',
+                    message: 'Invalid agent ID format'
+                });
+            }
+
+            const agent = await Agent.findOne({userId:agentId})
                 .populate('userId', 'firstName lastName email')
                 .lean();
 
@@ -86,7 +96,7 @@ class AgentController {
             const { agentId } = req.params;
             const { availability } = req.body;
 
-            const agent = await Agent.findById(agentId);
+            const agent = await Agent.findOne({userId:agentId});
             if (!agent) {
                 return res.status(404).json({
                     error: 'Not Found',
