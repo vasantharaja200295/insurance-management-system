@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const passport = require('passport');
 const rateLimit = require('express-rate-limit');
 const { handleError } = require('./src/middlewares/errorHandler');
+const { router: adminRouter } = require('./src/routes/api/admin');
 
 // Load environment variables before any other code
 dotenv.config();
@@ -44,6 +45,9 @@ app.use('/api', apiLimiter);
 app.use('/api/auth', require('./src/routes/api/auth'));
 app.use('/api/agents', require('./src/routes/api/agents'));
 app.use('/api/appointments',  require('./src/routes/api/appointments'));
+app.use('/api/plans', require('./src/routes/api/plans'));
+app.use('/api/notifications', require('./src/routes/api/notifications'));
+app.use('/api/admin', adminRouter);
 
 // Error handling middleware
 app.use(handleError);
